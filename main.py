@@ -1,72 +1,79 @@
-# STEP 1A
-# Import SQL Library and Pandas
-
 import sqlite3
 import pandas as pd
 
-# STEP 1B
-# Connect to the database
-conn = sqlite3.connect('data.sqlite')
-employee_data = pd.read_sql("""SELECT * FROM employees""", conn)
+conn = sqlite3.connect("database.db")
 
-
-# STEP 2
-# Replace None with your code
+# Step 2
 df_first_five = pd.read_sql(
-    "SELECT employee_number, last_name FROM employees LIMIT 5",
-    conn)
-
-# STEP 3
-# Replace None with your code
-df_five_reverse = pd.read_sql(
-    "SELECT last_name, employee_numberFROM employees LIMIT 5",
-    conn)
-
-# STEP 4
-# Replace None with your code
-df_alias = pd.read_sql(
-    "SELECT last_name, employee_number AS ID FROM employees",
+    """
+    SELECT employeeNumber, lastName
+    FROM employees
+    """,
     conn
 )
-# STEP 5
-# Replace None with your code
+
+# Step 3
+df_five_reverse = pd.read_sql(
+    """
+    SELECT lastName, employeeNumber
+    FROM employees
+    """,
+    conn
+)
+
+# Step 4
+df_alias = pd.read_sql(
+    """
+    SELECT lastName, employeeNumber AS ID
+    FROM employees
+    """,
+    conn
+)
+
+# Step 5
 df_executive = pd.read_sql(
     """
     SELECT *,
         CASE
-            WHEN jobTitle = "President"
-              OR jobTitle = "VP Sales"
-              OR jobTitle = "VP Marketing"
-            THEN "Executive"
-            ELSE "Not Executive"
+            WHEN jobTitle = 'President'
+              OR jobTitle = 'VP Sales'
+              OR jobTitle = 'VP Marketing'
+            THEN 'Executive'
+            ELSE 'Not Executive'
         END AS role
     FROM employees
     """,
     conn
 )
-# STEP 6
-# Replace None with your code
+
+# Step 6
 df_name_length = pd.read_sql(
-    "SELECT LENGTH(last_name) AS name_length FROM employees",
-    conn
-)
-# STEP 7
-# Replace None with your code
-df_short_title = pd.read_sql(
-    "SELECT SUBSTR(jobTitle, 1, 2) AS short_title FROM employees",
-    conn
-)
-# STEP 8
-# Replace None with your code
-sum_total_price = pd.read_sql(
     """
-    SELECT SUM(ROUND(priceEach * quantityOrdered, 0)) AS total_amount
-    FROM orderdetails
+    SELECT LENGTH(lastName) AS name_length
+    FROM employees
     """,
     conn
 )
-# STEP 9
-# Replace None with your code
+
+# Step 7
+df_short_title = pd.read_sql(
+    """
+    SELECT SUBSTR(jobTitle, 1, 2) AS short_title
+    FROM employees
+    """,
+    conn
+)
+
+# Step 8
+sum_total_price = pd.read_sql(
+    """
+    SELECT ROUND(priceEach * quantityOrdered, 0) AS total_price
+    FROM orderdetails
+    """,
+    conn
+).sum()
+
+# Step 9
 df_day_month_year = pd.read_sql(
     """
     SELECT orderDate,
@@ -77,4 +84,3 @@ df_day_month_year = pd.read_sql(
     """,
     conn
 )
-conn.close()
