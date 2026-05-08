@@ -16,7 +16,6 @@ df_first_five = pd.read_sql(
     """
     SELECT employeeNumber, lastName
     FROM employees
-    LIMIT 5
     """,
     conn
 )
@@ -26,7 +25,6 @@ df_five_reverse = pd.read_sql(
     """
     SELECT lastName, employeeNumber
     FROM employees
-    LIMIT 5
     """,
     conn
 )
@@ -81,7 +79,7 @@ sum_total_price = pd.read_sql(
     FROM orderdetails
     """,
     conn
-)
+)["total_price"]
 
 # Step 9
 df_day_month_year = pd.read_sql(
