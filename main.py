@@ -1,13 +1,22 @@
 import sqlite3
 import pandas as pd
 
-conn = sqlite3.connect("database.db")
+conn = sqlite3.connect('data.sqlite')
+
+employee_data = pd.read_sql(
+    """
+    SELECT * 
+    FROM employees
+    """,
+    conn
+)
 
 # Step 2
 df_first_five = pd.read_sql(
     """
     SELECT employeeNumber, lastName
     FROM employees
+    LIMIT 5
     """,
     conn
 )
@@ -17,6 +26,7 @@ df_five_reverse = pd.read_sql(
     """
     SELECT lastName, employeeNumber
     FROM employees
+    LIMIT 5
     """,
     conn
 )
@@ -67,11 +77,11 @@ df_short_title = pd.read_sql(
 # Step 8
 sum_total_price = pd.read_sql(
     """
-    SELECT ROUND(priceEach * quantityOrdered, 0) AS total_price
+    SELECT ROUND(SUM(priceEach * quantityOrdered), 0) AS total_price
     FROM orderdetails
     """,
     conn
-).sum()
+)
 
 # Step 9
 df_day_month_year = pd.read_sql(
@@ -84,3 +94,5 @@ df_day_month_year = pd.read_sql(
     """,
     conn
 )
+
+conn.close()
